@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Oct  5 23:52:48 2019
+SOLAR CALCULATOR
+@author: hssid
+"""
+
 import numpy as np
 import pandas as pd
 import math as m
@@ -5,8 +12,22 @@ import math as m
 #define variables
  #input values
 
-latitude=
-n=        #day number
+latitude= 45
+n=1             #day number
+LST=12          #Local Solar Time 1:30pm should be written as 13.5
+beta=45         #surface elevation
+psi= 180        #surface azimuth (relative angle from North)
 
 
-delta= 23.45*m.sin(360)
+delta= 23.45*m.sin(m.radians(360*(284+n)/365))
+HRA= 15 * (LST - 12)      #Hour Angle
+alpha = m.degrees( m.asin( m.sin( m.radians(delta)) * m.sin( m.radians(latitude)) + m.cos(m.radians(delta)) * m.cos(m.radians(latitude)) * m.cos(m.radians(HRA))) ) #solar altitude
+
+theta_z=90-alpha    #Solar Azimuth
+gamma = m.degrees(m.acos( m.sin(m.radians(alpha)) * m.cos(m.radians(beta)) + m.sin(m.radians(alpha)) * m.sin(m.radians(beta)) * m.cos(m.radians(theta_z - psi))) ) #incidence angle 
+
+AM = 1/m.cos(m.radians(theta_z))      #Air Mass
+ID = 1353*0.7**(AM**0.678)             #Irradiance
+
+ID_global = 1.1 * ID                        #Global Irradiance
+I = ID_global * m.cos(m.radians(gamma))     #Irradiance on the surface W/sqm
