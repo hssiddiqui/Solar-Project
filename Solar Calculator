@@ -1,3 +1,12 @@
-
+import numpy as np
+import pandas as pd
+import math as m
 
 #define variables
+ #input values
+
+latitude=
+n=        #day number
+
+
+delta= 23.45*m.sin(360)
